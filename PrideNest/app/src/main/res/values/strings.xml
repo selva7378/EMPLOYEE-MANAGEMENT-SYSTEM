@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">PrideNest</string>
+
+    <string name="LOGIN_SCREEN">Login Screen</string>
+    <string name="ADMIN_DASHBOARD">Admin DashBoard</string>
+    <string name="MANAGER_DASHBOARD">Manager DashBoard</string>
+    <string name="EMPLOYEE_DETAILS">Employee Details</string>
+    <string name="EMPLOYEE_LOGIN">Employee Login</string>
+    <string name="MANAGER_LOGIN">Manager Login</string>
+    <string name="ADMIN_LOGIN">Admin Login</string>
+    <string name="ADMIN_LISTING">Admin Listing</string>
+    <string name="MANAGER_LISTING">Manager Listing</string>
+    <string name="EMPLOYEE_ADD">Employee Add</string>
+    <string name="back_button">Back</string>
+    <string name="EMPLOYEE_DELETE">Employee Delete</string>
+    <string name="attention">Attention</string>
+    <string name="delete">Delete</string>
+    <string name="no">No</string>
+    <string name="delete_question">Are you sure you want to delete?</string>
+    <string name="yes">Yes</string>
+</resources>
