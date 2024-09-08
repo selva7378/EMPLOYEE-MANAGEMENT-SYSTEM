@@ -42,7 +42,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pridenest.LocalPrideNestViewModel
-import com.example.pridenest.datastore.UserRole
 import com.example.pridenest.roomdb.Employee
 import com.example.pridenest.viewmodel.PrideNestViewModel
 import kotlinx.coroutines.launch

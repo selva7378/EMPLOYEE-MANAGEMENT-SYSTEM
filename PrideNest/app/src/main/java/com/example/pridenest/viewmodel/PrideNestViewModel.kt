@@ -17,10 +17,6 @@ class PrideNestViewModel(
     private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
 
-    // Employee to Delete
-
-
-    // Expose the last logged in userId as a public StateFlow
     private val _lastLoggedInUserId = MutableStateFlow<String?>(null)
     val lastLoggedInUserId: StateFlow<String?> = _lastLoggedInUserId
 
@@ -49,12 +45,11 @@ class PrideNestViewModel(
     private val _allEmployeesList: MutableStateFlow<List<Employee>> = MutableStateFlow(listOf())
     val allEmployeesList: StateFlow<List<Employee>> = _allEmployeesList
 
-    private val _eployeesListByManager: MutableStateFlow<List<Employee>> =
+    private val _employeesListByManager: MutableStateFlow<List<Employee>> =
         MutableStateFlow(listOf())
-    val employeesListByManager: StateFlow<List<Employee>> = _eployeesListByManager
+    val employeesListByManager: StateFlow<List<Employee>> = _employeesListByManager
 
 
-    // Expose the last logged in role as a public StateFlow
     private val _lastLoggedInRole = MutableStateFlow<String?>(null)
     val lastLoggedInRole: StateFlow<String?> = _lastLoggedInRole
 
@@ -190,9 +185,6 @@ class PrideNestViewModel(
         }
     }
 
-    suspend fun getRole(employeeId: Int) {
-        employeeDb.getRole(employeeId)
-    }
 
     suspend fun insertEmployee(employee: Employee) {
         employeeDb.insert(employee)
@@ -226,8 +218,8 @@ class PrideNestViewModel(
         viewModelScope.launch {
             employeeDb.getEmployeeById(employeeId)
                 .collect { employee ->
-                    _employee.value = employee ?: Employee()  // Set default Employee if null
-                    _employeeToDelete.value = employee ?: Employee()  // Set default Employee if null
+                    _employee.value = employee
+                    _employeeToDelete.value = employee
                 }
         }
     }
@@ -283,12 +275,11 @@ class PrideNestViewModel(
         return employeeDb.validateEmployeeCredentials(if (userId == "") 0 else userId.toInt(), password.trim(), designation)
     }
 
+
     // datastore
 
     fun login(userId: String, role: String) {
         viewModelScope.launch {
-            // Save login details in DataStore using userId
-//            Log.i("viewmodel", "${role}" )
             dataStoreManager.saveLoginDetails(userId, role)
 
             Log.i("viewmodel", "${_lastLoggedInRole.value}")
@@ -296,7 +287,6 @@ class PrideNestViewModel(
         }
     }
 
-    // Logout function to clear stored data
     fun logout() {
         viewModelScope.launch {
             dataStoreManager.clearLoginDetails()

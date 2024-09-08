@@ -72,7 +72,7 @@ fun PrideNestApp(
     modifier: Modifier
 ) {
     var showSplashScreen by remember { mutableStateOf(true) }
-    // Observe lastLoggedInUserId and lastLoggedInRole
+
     val lastLoggedInUserId by prideNestViewModel.lastLoggedInUserId.collectAsState()
     val lastLoggedInRole by prideNestViewModel.lastLoggedInRole.collectAsState()
 
@@ -82,17 +82,14 @@ fun PrideNestApp(
     )
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    // Splash screen logic: show for 2 seconds
     LaunchedEffect(Unit) {
         delay(2000)
         showSplashScreen = false
     }
 
     if (showSplashScreen) {
-        // Show Lottie animation for 2 seconds
         SplashScreen()
     } else {
-        // Proceed with the app
         CompositionLocalProvider(LocalPrideNestViewModel provides prideNestViewModel) {
             Scaffold(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -105,9 +102,9 @@ fun PrideNestApp(
                     )
                 },
                 floatingActionButton = {
-                    if(currentScreen == PrideScreen.ADMIN_LISTING) {
+                    if (currentScreen == PrideScreen.ADMIN_LISTING) {
                         FloatingActionButton(
-                            onClick = {navController.navigate(PrideScreen.EMPLOYEE_ADD.name)},
+                            onClick = { navController.navigate(PrideScreen.EMPLOYEE_ADD.name) },
                             shape = MaterialTheme.shapes.medium,
                             modifier = Modifier
                                 .padding(
@@ -123,8 +120,6 @@ fun PrideNestApp(
                     }
                 },
             ) { innerPadding ->
-                val context = LocalContext.current
-
                 val startDestination = if (lastLoggedInUserId != null && lastLoggedInRole != null) {
                     when (lastLoggedInRole) {
                         "admin" -> PrideScreen.ADMIN_DASHBOARD.name
@@ -151,7 +146,6 @@ fun PrideNestApp(
                     navController.navigate(destination)
                 }
 
-                // Setup navigation with the computed start destination
                 NavHost(
                     navController = navController,
                     startDestination = startDestination,
@@ -174,17 +168,23 @@ fun PrideNestApp(
                         EmployeeLogin(onLoginSuccess = onLoginSuccess)
                     }
                     composable(route = PrideScreen.ADMIN_DASHBOARD.name) {
-                        AdminDashboard({ navController.navigate(PrideScreen.ADMIN_LISTING.name) }, innerPadding)
+                        AdminDashboard(
+                            { navController.navigate(PrideScreen.ADMIN_LISTING.name) },
+                            innerPadding
+                        )
                     }
                     composable(route = PrideScreen.MANAGER_DASHBOARD.name) {
-                        ManagerDashboard({ navController.navigate(PrideScreen.MANAGER_LISTING.name) }, innerPadding)
+                        ManagerDashboard(
+                            { navController.navigate(PrideScreen.MANAGER_LISTING.name) },
+                            innerPadding
+                        )
                     }
                     composable(route = PrideScreen.EMPLOYEE_DETAILS.name) {
                         EmployeeDetailsScreen(innerPadding)
                     }
                     composable(route = PrideScreen.ADMIN_LISTING.name) {
                         AdminListingScreen(
-                            navigateToEmployeeEditScreen = {navController.navigate(PrideScreen.EMPLOYEE_DELETE.name)},
+                            navigateToEmployeeEditScreen = { navController.navigate(PrideScreen.EMPLOYEE_DELETE.name) },
                             modifier
                         )
                     }
@@ -193,13 +193,13 @@ fun PrideNestApp(
                     }
                     composable(route = PrideScreen.EMPLOYEE_ADD.name) {
                         EmployeeAddScreen(
-                            navigateBack = {navController.navigateUp()}
+                            navigateBack = { navController.navigateUp() }
                         )
                     }
 
                     composable(route = PrideScreen.EMPLOYEE_DELETE.name) {
                         EmployeeEditScreen(
-                            navigateBack = {navController.navigateUp()}
+                            navigateBack = { navController.navigateUp() }
                         )
                     }
                 }
@@ -255,7 +255,7 @@ fun PrideAppBar(
                 onDismissRequest = { expanded = false }
             ) {
                 DropdownMenuItem(
-                    text = {Text("Log Out")},
+                    text = { Text("Log Out") },
                     onClick = {
                         expanded = false
                         viewModel.logout()
@@ -268,16 +268,13 @@ fun PrideAppBar(
 
 @Composable
 fun SplashScreen() {
-    // Load the Lottie animation from the raw resource
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.animation))
 
-    // Set up animation controls (e.g., play once)
     val progress by animateLottieCompositionAsState(
         composition = composition,
-        iterations = LottieConstants.IterateForever // Run the animation forever
+        iterations = LottieConstants.IterateForever
     )
 
-    // Display the Lottie animation in the center
     LottieAnimation(
         composition = composition,
         progress = { progress },

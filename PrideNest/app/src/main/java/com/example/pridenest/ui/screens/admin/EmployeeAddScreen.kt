@@ -74,14 +74,12 @@ fun ItemEntryBody(
     var employeePassword by remember { mutableStateOf("") }
     var profileImageUri by remember { mutableStateOf<Uri?>(null) }
 
-    // Check if all required fields are filled
     val isFormValid = employeeName.isNotBlank() && employeeDesignation.isNotBlank() && employeeTeam.isNotBlank() && employeePassword.isNotBlank() && employeeSalary > 0.0
 
     Column(
         modifier = modifier.padding(dimensionResource(id = R.dimen.padding_medium)).imePadding(),
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_large)),
     ) {
-        // Pass the state and event handlers to ItemInputForm
         ItemInputForm(
             employeeName = employeeName,
             employeeDesignation = employeeDesignation,
@@ -137,7 +135,6 @@ fun ItemInputForm(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    // Create an ActivityResultLauncher to pick an image from the gallery
     val imagePickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri: Uri? ->
@@ -164,7 +161,6 @@ fun ItemInputForm(
             singleLine = true
         )
 
-        // Designation Input
         OutlinedTextField(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
@@ -177,7 +173,6 @@ fun ItemInputForm(
             singleLine = true
         )
 
-        // Team Input
         OutlinedTextField(
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next
@@ -190,7 +185,6 @@ fun ItemInputForm(
             singleLine = true
         )
 
-        // Salary Input
         OutlinedTextField(
             value = if (employeeSalary != 0.0) employeeSalary.toString() else "",
             onValueChange = { onEmployeeSalaryChange(it.toDoubleOrNull() ?: 0.0) },
@@ -204,7 +198,6 @@ fun ItemInputForm(
             singleLine = true
         )
 
-        // Password Input
         OutlinedTextField(
             value = employeePassword,
             onValueChange = onEmployeePasswordChange,
@@ -219,7 +212,6 @@ fun ItemInputForm(
             visualTransformation = PasswordVisualTransformation()
         )
 
-        // Profile Image Selector
         Button(
             onClick = {
                 imagePickerLauncher.launch("image/*") // Launch the image picker
