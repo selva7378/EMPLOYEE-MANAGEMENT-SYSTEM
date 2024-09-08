@@ -262,8 +262,8 @@ class PrideNestViewModel(
             Employee(
                 name = "selvaganesh",
                 password = "selva".trim(),
-                designation = "employee",
-                team = "employee",
+                designation = "ios developer",
+                team = "desk",
                 salary = "100000",
                 profileImage = null,
             )
@@ -281,11 +281,6 @@ class PrideNestViewModel(
         }
         Log.i("viewmodel", "$password is the cur password")
         return employeeDb.validateEmployeeCredentials(if (userId == "") 0 else userId.toInt(), password.trim(), designation)
-    }
-
-
-    fun employeeCountByTeam() {
-
     }
 
     // datastore
