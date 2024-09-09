@@ -135,3 +135,112 @@ Lottie Animations:
 - **LogOut DropDown Menu :**
 
 ![LogoutDropDownMenu.png](./pridnestscr/LogoutDropDownMenu.jpeg)
+
+***
+
+# Screen Shots Dark Theme:
+
+- **Splash Screen DT :**
+
+
+
+
+![SplashScreenDT.jpg](./pridnestscr/SplashScreenDT.jpg)
+
+
+
+
+-  **Login Screen DT :**
+
+
+![LoginScreenDT.jpg](./pridnestscr/LoginScreenDT.jpg)
+
+
+- **Admin Login Screen DT :**
+
+
+
+![AdminLoginDT.jpg](./pridnestscr/AdminLoginDT.jpg)
+
+
+
+
+-  **Manager Login Screen DT :**
+
+
+
+
+![ManagerLoginDT.jpg](./pridnestscr/ManagerLoginDT.jpg)
+
+
+
+
+-  **Employee Login Screen DT :**
+
+
+
+![EmployeeLoginDT.jpg](./pridnestscr/EmployeeLoginDT.jpg)
+
+
+
+- **Admin DashBoard Screen DT **
+
+
+
+
+![AdminDashBoardDt.jpg](./pridnestscr/AdminDashBoardDt.jpg)
+
+
+
+
+- **Manager DashBoard Screen DT :**
+
+
+
+![ManagerDashBoardDT.jpg](./pridnestscr/ManagerDashBoardDT.jpg)
+
+
+
+- **Admin Listing Screen DT :**
+
+
+
+
+![AdminListingDt.jpg](./pridnestscr/AdminListingDt.jpg)
+
+
+
+- **Manager Listing Screen DT :**
+
+
+
+
+![ManagerListingDT.jpg](./pridnestscr/ManagerListingDT.jpg)
+
+
+
+- **Employee Add Screen DT :**
+
+
+
+![EmployeeAddDT.jpg](./pridnestscr/EmployeeAddDT.jpg)
+
+
+
+
+- **Employee Delete Screen DT :**
+
+
+
+
+![EmployeeDeleteDT.jpg](./pridnestscr/EmployeeDeleteDT.jpg)
+
+
+
+- **Employee Details Screen DT :**
+
+
+
+
+![EmployeeDetailsDT.jpg](./pridnestscr/EmployeeDetailsDT.jpg)
+
