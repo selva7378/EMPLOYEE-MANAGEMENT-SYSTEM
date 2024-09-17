@@ -20,7 +20,7 @@
 1. **Architecture Overview :**
 - The app follows the Model-View-ViewModel (MVVM) architecture to ensure a clean separation of concerns, improve testability, and maintainability.
 2. **Features Implemented :**
-- List the core features you’ve implemented in the app (e.g., data binding, live data, etc.).
+- List of the core features I’ve implemented in the app (room db, state flow, dynamic theme etc.).
 3. **Screens and Navigation :**
 - The app uses Jetpack Compose and a navigation graph to handle navigation between various screens, providing a seamless experience for users based on their role (Admin, Manager, or Employee).
 
