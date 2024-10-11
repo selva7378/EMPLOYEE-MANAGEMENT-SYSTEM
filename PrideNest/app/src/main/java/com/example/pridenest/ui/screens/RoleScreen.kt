@@ -47,100 +47,100 @@ import com.example.pridenest.viewmodel.PrideNestViewModel
 import kotlinx.coroutines.launch
 
 
-@Composable
-fun RoleScreen(
-    navigateToAdmin: () -> Unit,
-    navigateToManager: () -> Unit,
-    navigateToEmployee: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-
-    // Fancy gradient background
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(24.dp)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(24.dp)
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                // Admin Button
-                FancyButton(
-                    text = "Admin",
-                    onClick = navigateToAdmin,
-                )
-
-
-                // Manager Button
-                FancyButton(
-                    text = "Manager",
-                    onClick = navigateToManager,
-                )
-            }
-
-
-            // Employee Button
-            FancyButton(
-                text = "Employee",
-                onClick = navigateToEmployee,
-            )
-        }
-    }
-}
-
-// Reusable Fancy Button
-@Composable
-fun FancyButton(
-    text: String,
-    onClick: () -> Unit,
-) {
-    ElevatedButton(
-        onClick = onClick,
-        modifier = Modifier
-            .height(60.dp) // Set fixed height
-            .width(130.dp),
-        shape = CutCornerShape(topEnd = 16.dp, bottomStart = 16.dp, bottomEnd =  16.dp, topStart =  16.dp),
-        elevation = ButtonDefaults.elevatedButtonElevation(8.dp)
-    ) {
-        Text(
-            text = text,
-            fontWeight = FontWeight.Bold,
-            fontSize = 18.sp
-        )
-    }
-}
-
-
-@Composable
-fun EmployeeLogin(
-    onLoginSuccess: (String, String) -> Unit,
-    modifier: Modifier = Modifier
-) {
-    LoginScreen(onLoginSuccess, "employee")
-}
-
-@Composable
-fun AdminLogin(onLoginSuccess: (String, String) -> Unit, modifier: Modifier = Modifier) {
-    LoginScreen(onLoginSuccess, "admin")
-}
-
-@Composable
-fun ManagerLogin(onLoginSuccess: (String, String) -> Unit, modifier: Modifier = Modifier) {
-    LoginScreen(onLoginSuccess, "manager")
-}
+//@Composable
+//fun RoleScreen(
+//    navigateToAdmin: () -> Unit,
+//    navigateToManager: () -> Unit,
+//    navigateToEmployee: () -> Unit,
+//    modifier: Modifier = Modifier
+//) {
+//
+//    // Fancy gradient background
+//    Box(
+//        modifier = Modifier
+//            .fillMaxSize(),
+//        contentAlignment = Alignment.Center
+//    ) {
+//        Column(
+//            modifier = Modifier
+//                .padding(24.dp)
+//                .fillMaxWidth(),
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//            verticalArrangement = Arrangement.spacedBy(24.dp)
+//        ) {
+//            Row(
+//                modifier = Modifier.fillMaxWidth(),
+//                horizontalArrangement = Arrangement.SpaceBetween
+//            ) {
+//                // Admin Button
+//                FancyButton(
+//                    text = "Admin",
+//                    onClick = navigateToAdmin,
+//                )
+//
+//
+//                // Manager Button
+//                FancyButton(
+//                    text = "Manager",
+//                    onClick = navigateToManager,
+//                )
+//            }
+//
+//
+//            // Employee Button
+//            FancyButton(
+//                text = "Employee",
+//                onClick = navigateToEmployee,
+//            )
+//        }
+//    }
+//}
+//
+//// Reusable Fancy Button
+//@Composable
+//fun FancyButton(
+//    text: String,
+//    onClick: () -> Unit,
+//) {
+//    ElevatedButton(
+//        onClick = onClick,
+//        modifier = Modifier
+//            .height(60.dp)
+//            .width(130.dp),
+//        shape = CutCornerShape(topEnd = 16.dp, bottomStart = 16.dp, bottomEnd =  16.dp, topStart =  16.dp),
+//        elevation = ButtonDefaults.elevatedButtonElevation(8.dp)
+//    ) {
+//        Text(
+//            text = text,
+//            fontWeight = FontWeight.Bold,
+//            fontSize = 18.sp
+//        )
+//    }
+//}
+//
+//
+//@Composable
+//fun EmployeeLogin(
+//    onLoginSuccess: (String, String) -> Unit,
+//    modifier: Modifier = Modifier
+//) {
+//    LoginScreen(onLoginSuccess, "employee")
+//}
+//
+//@Composable
+//fun AdminLogin(onLoginSuccess: (String, String) -> Unit, modifier: Modifier = Modifier) {
+//    LoginScreen(onLoginSuccess, "admin")
+//}
+//
+//@Composable
+//fun ManagerLogin(onLoginSuccess: (String, String) -> Unit, modifier: Modifier = Modifier) {
+//    LoginScreen(onLoginSuccess, "manager")
+//}
 
 @Composable
 fun LoginScreen(
     onLoginSuccess: (String, String) -> Unit,
-    role: String,
+//    role: String,
     modifier: Modifier = Modifier
 ) {
     var userId by remember { mutableStateOf("") }
@@ -159,7 +159,7 @@ fun LoginScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Login as $role", style = MaterialTheme.typography.displayLarge)
+        Text(text = "Login", style = MaterialTheme.typography.displayLarge)
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             keyboardOptions = KeyboardOptions(
@@ -186,17 +186,13 @@ fun LoginScreen(
         ElevatedButton(
             onClick = {
                 coroutineScope.launch {
-                    // Call ViewModel to validate user credentials
-                    employee = viewModel.validateEmployee(userId, password, role)
+                    employee = viewModel.validateEmployee(userId, password)
                     if (employee != null) {
-                        // Valid login, navigate to the next screen and pass userId
-                        onLoginSuccess(userId, role)
+                        onLoginSuccess(userId, employee!!.designation)
                     } else {
-                        // Invalid login, show Toast
                         Toast.makeText(context, "Invalid User ID or Password", Toast.LENGTH_SHORT).show()
                     }
                 }
-
             },
             modifier = Modifier.fillMaxWidth()
         ) {

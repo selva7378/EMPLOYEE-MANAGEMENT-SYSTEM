@@ -95,6 +95,16 @@ fun PrideNestApp(
                 modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
                 topBar = {
                     PrideAppBar(
+                        navigateToEmployeeDetailsScreen = {
+                            navController.navigate(PrideScreen.EMPLOYEE_DETAILS.name)
+                        },
+                        navigateToLoginScreen = {
+                            navController.navigate(PrideScreen.LOGIN_SCREEN.name) {
+                                popUpTo(PrideScreen.LOGIN_SCREEN.name) { // Pop everything except the login screen
+                                    inclusive = false // Keep the login screen in the backstack
+                                }
+                            }
+                        },
                         scrollBehavior = scrollBehavior,
                         currentScreen = currentScreen,
                         canNavigateBack = navController.previousBackStackEntry != null,
@@ -124,8 +134,7 @@ fun PrideNestApp(
                     when (lastLoggedInRole) {
                         "admin" -> PrideScreen.ADMIN_DASHBOARD.name
                         "manager" -> PrideScreen.MANAGER_DASHBOARD.name
-                        "employee" -> PrideScreen.EMPLOYEE_DETAILS.name
-                        else -> PrideScreen.LOGIN_SCREEN.name
+                        else -> PrideScreen.EMPLOYEE_DETAILS.name
                     }
                 } else {
                     PrideScreen.LOGIN_SCREEN.name
@@ -152,21 +161,22 @@ fun PrideNestApp(
                     modifier = Modifier.padding(innerPadding)
                 ) {
                     composable(route = PrideScreen.LOGIN_SCREEN.name) {
-                        RoleScreen(
-                            navigateToAdmin = { navController.navigate(PrideScreen.ADMIN_LOGIN.name) },
-                            navigateToManager = { navController.navigate(PrideScreen.MANAGER_LOGIN.name) },
-                            navigateToEmployee = { navController.navigate(PrideScreen.EMPLOYEE_LOGIN.name) },
-                        )
+//                        RoleScreen(
+//                            navigateToAdmin = { navController.navigate(PrideScreen.ADMIN_LOGIN.name) },
+//                            navigateToManager = { navController.navigate(PrideScreen.MANAGER_LOGIN.name) },
+//                            navigateToEmployee = { navController.navigate(PrideScreen.EMPLOYEE_LOGIN.name) },
+//                        )
+                        LoginScreen(onLoginSuccess)
                     }
-                    composable(route = PrideScreen.ADMIN_LOGIN.name) {
-                        AdminLogin(onLoginSuccess = onLoginSuccess)
-                    }
-                    composable(route = PrideScreen.MANAGER_LOGIN.name) {
-                        ManagerLogin(onLoginSuccess = onLoginSuccess)
-                    }
-                    composable(route = PrideScreen.EMPLOYEE_LOGIN.name) {
-                        EmployeeLogin(onLoginSuccess = onLoginSuccess)
-                    }
+//                    composable(route = PrideScreen.ADMIN_LOGIN.name) {
+//                        AdminLogin(onLoginSuccess = onLoginSuccess)
+//                    }
+//                    composable(route = PrideScreen.MANAGER_LOGIN.name) {
+//                        ManagerLogin(onLoginSuccess = onLoginSuccess)
+//                    }
+//                    composable(route = PrideScreen.EMPLOYEE_LOGIN.name) {
+//                        EmployeeLogin(onLoginSuccess = onLoginSuccess)
+//                    }
                     composable(route = PrideScreen.ADMIN_DASHBOARD.name) {
                         AdminDashboard(
                             { navController.navigate(PrideScreen.ADMIN_LISTING.name) },
@@ -211,6 +221,8 @@ fun PrideNestApp(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrideAppBar(
+    navigateToLoginScreen: () -> Unit,
+    navigateToEmployeeDetailsScreen: () -> Unit,
     scrollBehavior: TopAppBarScrollBehavior,
     currentScreen: PrideScreen,
     canNavigateBack: Boolean,
@@ -219,6 +231,7 @@ fun PrideAppBar(
 ) {
     val viewModel = LocalPrideNestViewModel.current
     val lastLoggedInUserId by viewModel.lastLoggedInUserId.collectAsState()
+    val lastLoggedInRole by viewModel.lastLoggedInRole.collectAsState()
     var expanded by remember { mutableStateOf(false) }  // State to track whether the menu is expanded
 
     CenterAlignedTopAppBar(
@@ -239,7 +252,6 @@ fun PrideAppBar(
             }
         },
         actions = {
-            // Menu icon button
             if (lastLoggedInUserId != null) {
                 IconButton(onClick = { expanded = true }) {
                     Icon(
@@ -249,18 +261,28 @@ fun PrideAppBar(
                 }
             }
 
-            // DropdownMenu to display options
             DropdownMenu(
                 expanded = expanded,
                 onDismissRequest = { expanded = false }
             ) {
+                if(lastLoggedInRole == "admin" || lastLoggedInRole == "manager") {
+                    DropdownMenuItem(
+                        text = { Text("Profile") },
+                        onClick = {
+                            expanded = false
+                            navigateToEmployeeDetailsScreen()
+                        }
+                    )
+                }
                 DropdownMenuItem(
                     text = { Text("Log Out") },
                     onClick = {
                         expanded = false
                         viewModel.logout()
+                        navigateToLoginScreen()
                     }
                 )
+
             }
         }
     )

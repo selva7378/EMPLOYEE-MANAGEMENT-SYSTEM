@@ -24,7 +24,6 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PrideNestTheme {
-
                 PrideNestApp(
                     modifier = Modifier
                 )
@@ -32,6 +31,7 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
 }
 
 

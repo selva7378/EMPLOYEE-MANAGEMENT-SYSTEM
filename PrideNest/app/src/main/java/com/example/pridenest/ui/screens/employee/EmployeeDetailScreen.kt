@@ -1,5 +1,6 @@
 package com.example.pridenest.ui.screens.employee
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
@@ -49,17 +51,19 @@ fun EmployeeDetailsScreen(modifier: PaddingValues) {
         viewModel.getEmployeeById(lastLoggedInUserId?.toInt() ?: 0)
         val employee by viewModel.employee.collectAsState()
 
-        HeaderSection(
-            profileImage = employee.profileImage,  // Pass the profile image URI
-            name = employee.name,
-            role = employee.designation,
-            modifier = Modifier
-        )
-        EmployeeDetailsSection(
-            userId = employee.employeeId,
-            team = employee.team,
-            salary = employee.salary,
-        )
+        if(employee != null) {
+            HeaderSection(
+                profileImage = employee.profileImage,  // Pass the profile image URI
+                name = employee.name,
+                role = employee.designation,
+                modifier = Modifier
+            )
+            EmployeeDetailsSection(
+                userId = employee.employeeId,
+                team = employee.team,
+                salary = employee.salary,
+            )
+        }
     }
 }
 
@@ -77,7 +81,7 @@ fun HeaderSection(profileImage: String?, name: String, role: String, modifier: M
                 modifier = Modifier
                     .size(100.dp)
                     .clip(CircleShape),
-            )
+                )
         } ?: run {
             // Placeholder if no profile image is provided
             Image(
@@ -94,7 +98,7 @@ fun HeaderSection(profileImage: String?, name: String, role: String, modifier: M
         Text(
             text = name,
             color = MaterialTheme.colorScheme.primary,
-            fontWeight = FontWeight.ExtraBold,
+            fontWeight = FontWeight.Thin,
             style = TextStyle(
                 fontStyle = FontStyle.Italic,
                 fontFamily = FontFamily.Cursive,
@@ -116,7 +120,7 @@ fun HeaderSection(profileImage: String?, name: String, role: String, modifier: M
                 fontSize = 32.sp
             ),
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
+            modifier = Modifier.alpha(0.5f)
         )
     }
 }

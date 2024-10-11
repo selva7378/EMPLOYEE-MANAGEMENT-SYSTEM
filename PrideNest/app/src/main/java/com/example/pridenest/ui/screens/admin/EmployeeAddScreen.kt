@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -67,12 +68,12 @@ fun ItemEntryBody(
     onSaveClick: (Employee) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var employeeName by remember { mutableStateOf("") }
-    var employeeDesignation by remember { mutableStateOf("") }
-    var employeeTeam by remember { mutableStateOf("") }
-    var employeeSalary by remember { mutableStateOf(0.0) }
-    var employeePassword by remember { mutableStateOf("") }
-    var profileImageUri by remember { mutableStateOf<Uri?>(null) }
+    var employeeName by rememberSaveable { mutableStateOf("") }
+    var employeeDesignation by rememberSaveable { mutableStateOf("") }
+    var employeeTeam by rememberSaveable { mutableStateOf("") }
+    var employeeSalary by rememberSaveable { mutableStateOf(0.0) }
+    var employeePassword by rememberSaveable { mutableStateOf("") }
+    var profileImageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
 
     val isFormValid = employeeName.isNotBlank() && employeeDesignation.isNotBlank() && employeeTeam.isNotBlank() && employeePassword.isNotBlank() && employeeSalary > 0.0
 
@@ -98,11 +99,11 @@ fun ItemEntryBody(
             onClick = {
                 onSaveClick(
                     Employee(
-                        name = employeeName,
-                        designation = employeeDesignation,
-                        team = employeeTeam,
-                        salary = employeeSalary.toString(),
-                        password = employeePassword,
+                        name = employeeName.trim().lowercase(),
+                        designation = employeeDesignation.trim().lowercase(),
+                        team = employeeTeam.trim().lowercase(),
+                        salary = employeeSalary.toString().trim().lowercase(),
+                        password = employeePassword.trim().lowercase(),
                         profileImage = profileImageUri?.toString()
                     )
                 )

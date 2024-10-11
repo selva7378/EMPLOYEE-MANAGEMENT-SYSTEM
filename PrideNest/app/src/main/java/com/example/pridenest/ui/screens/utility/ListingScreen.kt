@@ -1,6 +1,7 @@
 package com.example.pridenest.ui.screens.utility
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -29,6 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -58,14 +61,18 @@ fun EmployeeList(
 
 
     val viewModel = LocalPrideNestViewModel.current
-    viewModel.getUniqueTeam()
     val lastLoggedInRole by viewModel.lastLoggedInRole.collectAsState()
     val lastLoggedInUserTeam by viewModel.lastLoggedInUserTeam.collectAsState()
-    if (lastLoggedInRole == "admin") {
-        viewModel.getAllEmployees()
-    } else {
-        viewModel.getEmployeesByTeam(lastLoggedInUserTeam!!)
+    LaunchedEffect(Unit) {
+        viewModel.getUniqueTeam()
+        if (lastLoggedInRole == "admin") {
+            viewModel.getAllEmployees()
+        } else if(lastLoggedInRole == "manager"){
+            Log.i("teamname", "$lastLoggedInUserTeam team")
+            viewModel.getEmployeesByTeam(lastLoggedInUserTeam!!)
+        }
     }
+
     val allEmployeeList by viewModel.allEmployeesList.collectAsState()
     val uniqueTeams by viewModel.uniqueTeam.collectAsState()
 
@@ -140,8 +147,11 @@ fun EmployeeList(
             )
         }
 
+        val listState = rememberLazyListState()
+
 
         LazyColumn(
+            state = listState, // Assign the remembered list state
             modifier = modifier.fillMaxSize(),
 
             ) {
@@ -174,8 +184,8 @@ fun TeamList(
                 isSelected = selectedTeam == team,
                 onTeamClick = { selectedCategory ->
                     if (selectedCategory == selectedTeam) {
-                        selectedTeam = null // Unselect if the same team is clicked
-                        viewModel.getAllEmployees() // Show all employees when unselected
+                        selectedTeam = null
+                        viewModel.getAllEmployees()
                     } else {
                         selectedTeam = selectedCategory
                         filterEmployee(selectedCategory)
@@ -199,11 +209,11 @@ fun TeamCard(
             .padding(4.dp)
             .width(120.dp)
             .graphicsLayer {
-                alpha = if (isSelected) 1f else 0.7f // Change appearance when selected
+                alpha = if (isSelected) 1f else 0.7f
             },
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
         onClick = {
-            onTeamClick(category) // Notify parent composable about the click
+            onTeamClick(category)
         }
     ) {
         Text(
@@ -213,7 +223,8 @@ fun TeamCard(
                 .wrapContentWidth(align = Alignment.CenterHorizontally),
             text = category,
             style = if (isSelected) MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
-            else MaterialTheme.typography.bodyLarge
+            else MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.primary
         )
     }
 }
@@ -255,52 +266,56 @@ fun EmployeeCard(
                 Row(modifier = Modifier.padding(bottom = 4.dp)) {
                     Text(
                         text = "Name  : ",
-                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Text(
                         text = employee.name,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 }
                 Row(modifier = Modifier.padding(bottom = 4.dp)) {
                     Text(
                         text = "UserId : ",
-                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Text(
                         text = employee.employeeId.toString(),
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 }
                 Row(modifier = Modifier.padding(bottom = 4.dp)) {
                     Text(
                         text = "Role     : ",
-                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Text(
                         text = employee.designation,
                         style = MaterialTheme.typography.bodyLarge,
-//                        modifier = Modifier.graphicsLayer(alpha = 0.7f)
                     )
                 }
                 Row(modifier = Modifier.padding(bottom = 4.dp)) {
                     Text(
                         text = "Team   : ",
-                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Text(
                         text = employee.team,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 }
                 Row(modifier = Modifier.padding(bottom = 4.dp)) {
                     Text(
                         text = "Salary  : ",
-                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold)
+                        style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.Bold),
+                        color = MaterialTheme.colorScheme.primary
                     )
                     Text(
                         text = employee.salary,
-                        style = MaterialTheme.typography.bodyLarge
+                        style = MaterialTheme.typography.bodyLarge,
                     )
                 }
             }
@@ -308,10 +323,8 @@ fun EmployeeCard(
             GlideImage(
                 imageModel = {
                     if (employee.profileImage.isNullOrEmpty()) {
-                        // Placeholder image when no URI is provided
-                        R.drawable.place_holder // Replace with your actual placeholder
+                        R.drawable.place_holder
                     } else {
-                        // Parse the profile image URI from RoomDB
                         Uri.parse(employee.profileImage)
                     }
                 },

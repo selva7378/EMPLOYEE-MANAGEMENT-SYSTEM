@@ -17,9 +17,9 @@ fun AdminDashboard(
     val viewModel = LocalPrideNestViewModel.current
     val totalEmployeeCount by viewModel.dbSize.collectAsState()
     val uniqueTeamCount by viewModel.uniqueTeamCount.collectAsState()
-    viewModel.getRecentHiresOverall()
     val recentHire by viewModel.allEmployeesList.collectAsState()
     LaunchedEffect(Unit) {
+        viewModel.getRecentHiresOverall()
         viewModel.setDbSize()
         viewModel.setUniqueTeamCount()
     }

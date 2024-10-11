@@ -17,6 +17,9 @@ interface EmployeesDao {
     @Delete
     suspend fun delete(employee: Employee)
 
+    @Query("SELECT COUNT(*) FROM employees WHERE designation = 'admin'")
+    suspend fun getAdminCount(): Int
+
     @Query("SELECT team FROM Employees WHERE employeeId = :employeeId")
     suspend fun getTeamByEmployeeId(employeeId: Int): String?
 

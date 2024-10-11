@@ -1,5 +1,6 @@
 package com.example.pridenest.repository
 
+import android.util.Log
 import com.example.pridenest.roomdb.Employee
 import com.example.pridenest.roomdb.EmployeesDao
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,7 @@ interface EmployeesDatabaseRepository {
 
     suspend fun getTeamByEmployeeId(employeeId: Int): String?
 
-    suspend fun validateEmployeeCredentials(employeeId: Int, password: String, designation: String): Employee?
+//    suspend fun validateEmployeeCredentials(employeeId: Int, password: String, designation: String): Employee?
 
     suspend fun validateEmployeeCredentials(employeeId: Int, password: String): Employee?
 
@@ -48,7 +49,7 @@ class OfflineEmployeesRepository(private val employeesDao: EmployeesDao) : Emplo
 
     override fun getRole(employeeId: Int): Flow<String> = employeesDao.getRole(employeeId)
 
-    override suspend fun validateEmployeeCredentials(employeeId: Int, password: String, designation: String): Employee? = employeesDao.validateEmployeeCredentials(employeeId, password, designation)
+//    override suspend fun validateEmployeeCredentials(employeeId: Int, password: String, designation: String): Employee? = employeesDao.validateEmployeeCredentials(employeeId, password, designation)
 
     override suspend fun validateEmployeeCredentials(employeeId: Int, password: String): Employee? = employeesDao.validateEmployeeCredentials(employeeId, password)
 
@@ -74,7 +75,17 @@ class OfflineEmployeesRepository(private val employeesDao: EmployeesDao) : Emplo
 
     override fun getRecentHiresByTeam(team: String): Flow<List<Employee>> = employeesDao.getRecentHiresByTeam(team)
 
-    override suspend fun delete(employee: Employee) = employeesDao.delete(employee)
+    override suspend fun delete(employee: Employee) {
+        if (employee.designation.equals("Admin", ignoreCase = true)) {
+            val adminCount = employeesDao.getAdminCount()
+            Log.i("database", "$adminCount")
+            if (adminCount > 1) {
+                employeesDao.delete(employee)
+            }
+        } else {
+            employeesDao.delete(employee)
+        }
+    }
 
 
 }

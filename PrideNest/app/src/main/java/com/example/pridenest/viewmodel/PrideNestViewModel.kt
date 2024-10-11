@@ -53,20 +53,16 @@ class PrideNestViewModel(
     private val _lastLoggedInRole = MutableStateFlow<String?>(null)
     val lastLoggedInRole: StateFlow<String?> = _lastLoggedInRole
 
-
     init {
-        // Load the last logged-in user and role from DataStore when ViewModel is created
         viewModelScope.launch {
             initializeData()
 
-            // Collecting the lastLoggedInRole in a separate coroutine
             launch {
                 dataStoreManager.lastLoggedInRole.collect { role ->
                     _lastLoggedInRole.value = role
                 }
             }
 
-            // Collecting the lastLoggedInUserId in a separate coroutine
             launch {
                 dataStoreManager.lastLoggedInUserId.collect { userId ->
                     _lastLoggedInUserId.value = userId
@@ -225,7 +221,6 @@ class PrideNestViewModel(
     }
 
     suspend fun deleteEmployee(employee: Employee){
-        if (employee.designation != "admin")
             employeeDb.delete(employee)
     }
 
@@ -267,12 +262,9 @@ class PrideNestViewModel(
         _dbSize.value = employeeDb.getDbSize()
     }
 
-    suspend fun validateEmployee(userId: String, password: String, designation: String): Employee? {
-        if(designation == "employee") {
-            return employeeDb.validateEmployeeCredentials(if (userId == "") 0 else userId.toInt(), password.trim())
-        }
+    suspend fun validateEmployee(userId: String, password: String): Employee? {
         Log.i("viewmodel", "$password is the cur password")
-        return employeeDb.validateEmployeeCredentials(if (userId == "") 0 else userId.toInt(), password.trim(), designation)
+        return employeeDb.validateEmployeeCredentials(if (userId == "") 0 else userId.toInt(), password.trim())
     }
 
 

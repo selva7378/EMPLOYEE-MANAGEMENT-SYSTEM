@@ -61,12 +61,16 @@ private fun EmployeeDetailsBody(
         verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium))
     ) {
         var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
-        EmployeeCard(
-            allowCardClick = false,
-            navigateToEditScreen = {},
-            employee = employeeToDelete,
-            modifier = Modifier.fillMaxWidth()
-        )
+
+        if (employeeToDelete != null) {
+            EmployeeCard(
+                allowCardClick = false,
+                navigateToEditScreen = {},
+                employee = employeeToDelete,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+
 
         OutlinedButton(
             onClick = { deleteConfirmationRequired = true },
