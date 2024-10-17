@@ -81,23 +81,6 @@ Lottie Animations:
 
 ![LoginScreen.jpg](./pridnestscr/LoginScreen.jpg)
 
-- **Admin Login Screen :**
-
-
-![AdminLoginScreen.jpg](./pridnestscr/AdminLoginScreen.jpg)
-
-
--  **Manager Login Screen :**
-
-
-![ManagerLoginScreen.jpg](./pridnestscr/ManagerLoginScreen.jpg)
-
-
--  **Employee Login Screen :**
-
-
-![EmployeeLoginScreen.jpg](./pridnestscr/EmployeeLoginScreen.jpg)
-
 - **Admin DashBoard Screen**
 
 
@@ -154,33 +137,6 @@ Lottie Animations:
 
 
 ![LoginScreenDT.jpg](./pridnestscr/LoginScreenDT.jpg)
-
-
-- **Admin Login Screen DT :**
-
-
-
-![AdminLoginDT.jpg](./pridnestscr/AdminLoginDT.jpg)
-
-
-
-
--  **Manager Login Screen DT :**
-
-
-
-
-![ManagerLoginDT.jpg](./pridnestscr/ManagerLoginDT.jpg)
-
-
-
-
--  **Employee Login Screen DT :**
-
-
-
-![EmployeeLoginDT.jpg](./pridnestscr/EmployeeLoginDT.jpg)
-
 
 
 - **Admin DashBoard Screen DT **
