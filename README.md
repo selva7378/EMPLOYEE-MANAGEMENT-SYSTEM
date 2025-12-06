@@ -1,3 +1,7 @@
+## Demo Video
+
+[![Watch the video](https://img.youtube.com/vi/wlo3wHM5WfI/maxresdefault.jpg)](https://youtu.be/wlo3wHM5WfI)
+
 # Android-Interview
 
 # *PrideNest (Employee Management App)*
